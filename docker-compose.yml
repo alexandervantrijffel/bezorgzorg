@@ -7,7 +7,7 @@ services:
    volumes:
      - 'postgresql_data:/bitnami/postgresql'
    networks:
-     - bezorgzorg
+     - discoursenet
   redis:
     image: 'docker.io/bitnami/redis:6.0-debian-10'
     environment:
@@ -15,11 +15,11 @@ services:
     volumes:
       - 'redis_data:/bitnami'
     networks:
-      - bezorgzorg
+      - discoursenet
   discourse:
     image: 'docker.io/bitnami/discourse:2-debian-10'
     ports:
-      - '3030:3000'
+      - '80:3000'
     depends_on:
       - postgresql
       - redis
@@ -37,14 +37,14 @@ services:
       - DISCOURSE_POSTGRESQL_USERNAME=dbuser
       - DISCOURSE_POSTGRESQL_PASSWORD=dbpass
       - DISCOURSE_HOSTNAME=localhost
-      - DISCOURSE_PORT_NUMBER=3030
+      - DISCOURSE_PORT_NUMBER=3000
       # - SMTP_HOST=smtp.gmail.com
       # - SMTP_PORT=587
       # - SMTP_USER=<USERNAME HERE>@gmail.com
       # - SMTP_PASSWORD=<APP PASSWORD HERE>
         # - DISCOURSE_SKIP_INSTALL=yes
     networks:
-      - bezorgzorg
+      - discoursenet
   sidekiq:
     image: 'docker.io/bitnami/discourse:2-debian-10'
     depends_on:
@@ -60,13 +60,12 @@ services:
       - DISCOURSE_HOST=discourse
       - DISCOURSE_PORT=3000
       - DISCOURSE_HOSTNAME=localhost
-      - DISCOURSE_PORT_NUMBER=3030
       # - SMTP_HOST=smtp.gmail.com
       # - SMTP_PORT=587
       # - SMTP_USER=<USERNAME HERE>@gmail.com
       # - SMTP_PASSWORD=<APP PASSWORD HERE>
     networks:
-      - bezorgzorg
+      - discoursenet
 volumes:
   postgresql_data:
    driver: local
@@ -77,8 +76,8 @@ volumes:
 
 networks:
 # allow access to postgres on the host with the following command:
-# ufw allow in on bezorgzorg-bridge from any to any port 5432
-  bezorgzorg:
+# ufw allow in on discoursenet from any to any port 5432
+  discoursenet:
     driver: bridge
     driver_opts:
-      com.docker.network.bridge.name: bezorgzorg
+      com.docker.network.bridge.name: discoursenet
