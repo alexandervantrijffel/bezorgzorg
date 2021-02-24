@@ -35,7 +35,7 @@ services:
       - DISCOURSE_POSTGRESQL_NAME=bezorgzorg_discourse
       - DISCOURSE_POSTGRESQL_USERNAME=<DB USERNAME HERE>
       - DISCOURSE_POSTGRESQL_PASSWORD=<DB USER PASS HERE>
-      - DISCOURSE_HOSTNAME=example.structura.dev
+      - DISCOURSE_HOSTNAME=localhost
       - SMTP_HOST=smtp.gmail.com
       - SMTP_PORT=587
       - SMTP_USER=<USERNAME HERE>@gmail.com
@@ -57,7 +57,7 @@ services:
       - DISCOURSE_POSTGRESQL_PASSWORD=<DB USER PASS HERE>
       - DISCOURSE_HOST=discourse
       - DISCOURSE_PORT=3000
-      - DISCOURSE_HOSTNAME=example.structura.dev
+      - DISCOURSE_HOSTNAME=localhost
       - SMTP_HOST=smtp.gmail.com
       - SMTP_PORT=587
       - SMTP_USER=<USERNAME HERE>@gmail.com
