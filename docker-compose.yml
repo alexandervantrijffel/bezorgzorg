@@ -37,6 +37,7 @@ services:
       - DISCOURSE_POSTGRESQL_USERNAME=dbuser
       - DISCOURSE_POSTGRESQL_PASSWORD=dbpass
       - DISCOURSE_HOSTNAME=localhost
+      - DISCOURSE_PORT_NUMBER=3030
       # - SMTP_HOST=smtp.gmail.com
       # - SMTP_PORT=587
       # - SMTP_USER=<USERNAME HERE>@gmail.com
@@ -59,6 +60,7 @@ services:
       - DISCOURSE_HOST=discourse
       - DISCOURSE_PORT=3000
       - DISCOURSE_HOSTNAME=localhost
+      - DISCOURSE_PORT_NUMBER=3030
       # - SMTP_HOST=smtp.gmail.com
       # - SMTP_PORT=587
       # - SMTP_USER=<USERNAME HERE>@gmail.com
