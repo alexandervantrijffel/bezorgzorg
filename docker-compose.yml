@@ -1,0 +1,85 @@
+version: '2'
+services:
+  postgresql:
+   image: 'docker.io/bitnami/postgresql:11-debian-10'
+   environment:
+     - ALLOW_EMPTY_PASSWORD=yes
+   volumes:
+     - 'postgresql_data:/bitnami/postgresql'
+  redis:
+    image: 'docker.io/bitnami/redis:6.0-debian-10'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    volumes:
+      - 'redis_data:/bitnami'
+    networks:
+      - bezorgzorg
+  discourse:
+    image: 'docker.io/bitnami/discourse:2-debian-10'
+    ports:
+      - '3030:3000'
+    depends_on:
+      - postgresql
+      - redis
+    volumes:
+      - 'discourse_data:/bitnami'
+    environment:
+      - POSTGRESQL_HOST=bezorgzorg.structura.dev
+      - POSTGRESQL_ROOT_USER=<POSTGRES WITH SUPERUSER USERNAME HERE>
+      - POSTGRESQL_ROOT_PASSWORD=<SUPERUSER PASSWORD HERE>
+      - POSTGRESQL_CLIENT_CREATE_DATABASE_NAME=bn_discourse
+      - POSTGRESQL_CLIENT_CREATE_DATABASE_USERNAME=<DB USERNAME HERE>
+      - POSTGRESQL_CLIENT_CREATE_DATABASE_PASSWORD=<DB USER PASS HERE>
+      - DISCOURSE_POSTGRESQL_NAME=bezorgzorg_discourse
+      - DISCOURSE_POSTGRESQL_USERNAME=<DB USERNAME HERE>
+      - DISCOURSE_POSTGRESQL_PASSWORD=<DB USER PASS HERE>
+      - DISCOURSE_HOSTNAME=example.structura.dev
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=<USERNAME HERE>@gmail.com
+      - SMTP_PASSWORD=<APP PASSWORD HERE>
+        # - DISCOURSE_SKIP_INSTALL=yes
+    networks:
+      - bezorgzorg
+  sidekiq:
+    image: 'docker.io/bitnami/discourse:2-debian-10'
+    depends_on:
+      - discourse
+    volumes:
+      - 'discourse_data:/bitnami'
+    command: 'nami start --foreground discourse-sidekiq'
+    environment:
+      - POSTGRESQL_HOST=bezorgzorg.structura.dev
+      - DISCOURSE_POSTGRESQL_NAME=bn_discourse
+      - DISCOURSE_POSTGRESQL_USERNAME=<DB USERNAME HERE>
+      - DISCOURSE_POSTGRESQL_PASSWORD=<DB USER PASS HERE>
+      - DISCOURSE_HOST=discourse
+      - DISCOURSE_PORT=3000
+      - DISCOURSE_HOSTNAME=example.structura.dev
+      - SMTP_HOST=smtp.gmail.com
+      - SMTP_PORT=587
+      - SMTP_USER=<USERNAME HERE>@gmail.com
+      - SMTP_PASSWORD=<APP PASSWORD HERE>
+    networks:
+      - bezorgzorg
+volumes:
+  postgresql_data:
+   driver: /opt/dockers/bezorgzorg/volumes/postgresql_dat
+  redis_data:
+    driver_opts: 
+      type: none
+      device: /opt/dockers/bezorgzorg/volumes/redis_data
+      o: bind
+  discourse_data:
+    driver_opts:
+      type: none
+      device: /opt/dockers/bezorgzorg/volumes/discourse_data
+      o: bind
+
+networks:
+# allow access to postgres on the host with the following command:
+# ufw allow in on bezorgzorg-bridge from any to any port 5432
+  bezorgzorg:
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.name: bezorgzorg
