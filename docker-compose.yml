@@ -6,6 +6,8 @@ services:
      - ALLOW_EMPTY_PASSWORD=yes
    volumes:
      - 'postgresql_data:/bitnami/postgresql'
+   networks:
+     - bezorgzorg
   redis:
     image: 'docker.io/bitnami/redis:6.0-debian-10'
     environment:
@@ -64,17 +66,11 @@ services:
       - bezorgzorg
 volumes:
   postgresql_data:
-   driver: /opt/dockers/bezorgzorg/volumes/postgresql_dat
+   driver: local
   redis_data:
-    driver_opts: 
-      type: none
-      device: /opt/dockers/bezorgzorg/volumes/redis_data
-      o: bind
+    driver: local
   discourse_data:
-    driver_opts:
-      type: none
-      device: /opt/dockers/bezorgzorg/volumes/discourse_data
-      o: bind
+    driver: local
 
 networks:
 # allow access to postgres on the host with the following command:
