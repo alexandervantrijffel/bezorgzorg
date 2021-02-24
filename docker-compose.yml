@@ -26,7 +26,7 @@ services:
     volumes:
       - 'discourse_data:/bitnami'
     environment:
-      - POSTGRESQL_HOST=bezorgzorg.structura.dev
+      - POSTGRESQL_HOST=postgresql
       - POSTGRESQL_ROOT_USER=<POSTGRES WITH SUPERUSER USERNAME HERE>
       - POSTGRESQL_ROOT_PASSWORD=<SUPERUSER PASSWORD HERE>
       - POSTGRESQL_CLIENT_CREATE_DATABASE_NAME=bn_discourse
@@ -51,7 +51,7 @@ services:
       - 'discourse_data:/bitnami'
     command: 'nami start --foreground discourse-sidekiq'
     environment:
-      - POSTGRESQL_HOST=bezorgzorg.structura.dev
+      - POSTGRESQL_HOST=postgresql
       - DISCOURSE_POSTGRESQL_NAME=bn_discourse
       - DISCOURSE_POSTGRESQL_USERNAME=<DB USERNAME HERE>
       - DISCOURSE_POSTGRESQL_PASSWORD=<DB USER PASS HERE>
